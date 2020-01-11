@@ -1,11 +1,11 @@
 import React from 'react'
 // import Workcenter from './workcenter'
 
-const Workcenter = () => {
-  const workcenter = 'I am a workcenter'
+const Workcenter = props => {
+  const workcenter = `workcenter ${props.number + 1}`
   return (
     <div style={styles.container}>
-      <h2 style={styles.h2}>{workcenter}</h2>
+      <h3 style={styles.h2}>{workcenter}</h3>
     </div>
   )
 }

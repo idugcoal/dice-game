@@ -6,11 +6,11 @@ import Factory from './components/factory'
 function App() {
   return (
     <div className='App'>
-      <header className='App-header'>Dice Game</header>
-      <body className='Body'>
+      <div className='App-header'>Dice Game</div>
+      <div className='Body'>
         <UserInputs className='User-Inputs' />
         <Factory className='Factory' />
-      </body>
+      </div>
     </div>
   )
 }

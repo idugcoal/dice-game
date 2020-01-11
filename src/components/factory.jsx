@@ -3,16 +3,18 @@ import Workcenter from './workcenter'
 
 const Factory = () => {
   const factory = 'I am a factory'
+  const workcenters = []
+  const numWorkcenters = 6
+  for (let i = 0; i < numWorkcenters; i++) {
+    workcenters.push(i)
+  }
   return (
     <div style={styles.container}>
       <h1 style={styles.h1}>{factory}</h1>
       <div style={styles.workcenters}>
-        <Workcenter />
-        <Workcenter />
-        <Workcenter />
-        <Workcenter />
-        <Workcenter />
-        <Workcenter />
+        {workcenters.map((workcenter, index) => {
+          return <Workcenter number={index} key={index} />
+        })}
       </div>
     </div>
   )
