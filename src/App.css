@@ -1,26 +1,36 @@
 /* align-items: center; */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+
 .App {
   display: flex;
   flex-direction: column;
-  background-color: #282c34;
+  height: 100vh;
+}
+
+.App > * {
+  flex: 1 100%;
 }
 
 .App-header {
-  display: flex;
-  min-height: 5vh;
-  /* max-height: 10vh; */
-  text-align: center;
-  /* flex-direction: column;
-  align-items: center; */
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: 32px;
+  text-align: center;
+  flex: 1 0 10%;
+  background: #282c34;
   color: white;
 }
 
 .Body {
-  background-color: #ffffff;
+  flex: 1 0 90%;
+  background: papayawhip;
 }
 
 .Factory {
   background-color: #888888;
+  display: 'flex';
 }
