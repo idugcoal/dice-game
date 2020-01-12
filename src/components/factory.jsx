@@ -1,9 +1,7 @@
 import React from 'react'
 import Workcenter from './workcenter'
 
-const Factory = props => {
-  const { numWorkcenters } = props
-
+const Factory = ({ numWorkcenters, wipPerWorkcenter, wipPerConstraint }) => {
   /** Helper functions */
   const isConstraintIndex = index => {
     return index === Math.round(numWorkcenters * 0.67) - 1
@@ -12,10 +10,12 @@ const Factory = props => {
   const buildWorkcenters = () => {
     const _workcenters = []
     for (let i = 0; i < numWorkcenters; i++) {
+      const isConstraint = isConstraintIndex(i)
       _workcenters.push({
         key: i,
         number: i + 1,
-        isConstraint: isConstraintIndex(i),
+        isConstraint: isConstraint,
+        wip: isConstraint ? wipPerConstraint : wipPerWorkcenter,
       })
     }
     console.log('workcenters', _workcenters)
@@ -36,6 +36,7 @@ const Factory = props => {
               key={workcenter.key}
               number={workcenter.number}
               isConstraint={workcenter.isConstraint}
+              wip={workcenter.wip}
             />
           )
         })}

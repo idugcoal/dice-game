@@ -5,12 +5,12 @@ import Factory from './components/factory'
 
 function App() {
   /** State */
-  const [runNumber, setRunNumber] = useState()
-  const [numWorkdays, setNumWorkdays] = useState()
+  const [runNumber, setRunNumber] = useState(4)
+  const [numWorkdays, setNumWorkdays] = useState(20)
   const [numWorkcenters, setNumWorkcenters] = useState(6)
-  const [wipPerWorkcenter, setWipPerWorkcenter] = useState()
-  const [numConstraints, setNumConstraints] = useState()
-  const [wipPerConstraint, setWipPerConstraint] = useState()
+  const [wipPerWorkcenter, setWipPerWorkcenter] = useState(4)
+  const [numConstraints, setNumConstraints] = useState(1)
+  const [wipPerConstraint, setWipPerConstraint] = useState(12)
 
   /** Initial config */
 
