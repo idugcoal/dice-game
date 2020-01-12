@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Workcenter = ({ isConstraint, number }) => {
+const Workcenter = ({ isConstraint, number, wip }) => {
   /** Helper functions */
   const getStatus = isConstraint => {
     return isConstraint ? 'Constraint!' : 'Not a constraint'
@@ -13,6 +13,7 @@ const Workcenter = ({ isConstraint, number }) => {
       <div style={isConstraint ? styles.constraint : styles.nonConstraint}>
         {getStatus(isConstraint)}
       </div>
+      <div style={styles.wip}>{`WIP: ${wip}`}</div>
     </div>
   )
 }
