@@ -2,10 +2,10 @@ import React from 'react'
 // import Workcenter from './workcenter'
 
 const Workcenter = props => {
-  const workcenter = `workcenter ${props.number + 1}`
+  const workcenter = `work center #${props.number + 1}`
   return (
     <div style={styles.container}>
-      <h3 style={styles.h2}>{workcenter}</h3>
+      <div style={styles.title}>{workcenter}</div>
     </div>
   )
 }
@@ -14,9 +14,10 @@ const styles = {
   container: {
     display: 'flex',
   },
-  h2: {
+  title: {
     color: 'purple',
     textAlign: 'center',
+    fontSize: 16,
   },
 }
 export default Workcenter

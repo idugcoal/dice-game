@@ -1,15 +1,79 @@
 import React from 'react'
 
-const UserInputs = () => {
+const UserInputs = props => {
+  // console.log(props)
   return (
     <div style={styles.container}>
-      <h1>I am the user inputs</h1>
+      <div style={styles.title}>I am the user inputs</div>
       <div style={styles.inputsContainer}>
-        <div style={styles.input}>User Input #1</div>
-        <div style={styles.input}>User Input #2</div>
-        <div style={styles.input}>User Input #3</div>
-        <div style={styles.input}>User Input #4</div>
+        <Input cb={props.setRunNumber} type={'runNumber'} label={'run #'} />
+        <Input
+          cb={props.setNumWorkdays}
+          type={'numWorkdays'}
+          label={'# of workdays'}
+        />
+        <Input
+          cb={props.setNumWorkcenters}
+          type={'numWorkcenters'}
+          label={'# of work centers'}
+        />
+        <Input
+          cb={props.setWipPerWorkcenter}
+          type={'wipPerWorkcenter'}
+          label={'WIP per work center'}
+        />
+        <Input
+          cb={props.setNumConstraints}
+          type={'numConstraints'}
+          label={'# of constraints'}
+        />
+        <Input
+          cb={props.setWipPerConstraint}
+          type={'wipPerConstraint'}
+          label={'WIP per constraint'}
+        />
+        <Input cb={props.setRunNumber} type={'roll'} label={'Roll Dice'} />
       </div>
+    </div>
+  )
+}
+
+const Input = props => {
+  const getInput = ({ type, cb }) => {
+    switch (type) {
+      case 'runNumber':
+        cb(1)
+        return
+      case 'numWorkdays':
+        cb(20)
+        return
+      case 'numWorkcenters':
+        cb(6)
+        return
+      case 'wipPerWorkcenter':
+        cb(4)
+        return
+      case 'numConstraints':
+        cb(1)
+        return
+      case 'wipPerConstraint':
+        cb(12)
+        return
+      case 'roll':
+        return 3
+      default:
+        return 'error'
+    }
+  }
+
+  const onClick = props => {
+    // console.log(props)
+    getInput(props)
+  }
+
+  return (
+    <div style={styles.input} onClick={() => onClick(props)}>
+      {props.label}
     </div>
   )
 }
@@ -22,8 +86,9 @@ const styles = {
     justifyContent: 'center',
     border: '1px solid black',
   },
-  h1: {
+  title: {
     textAlign: 'center',
+    fontSize: 24,
   },
   inputsContainer: {
     display: 'flex',
