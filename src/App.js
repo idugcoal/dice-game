@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './App.css'
 import UserInputs from './components/user_inputs'
 import Factory from './components/factory'
+import { getWorkcenters } from './components/fabricator'
 
 function App() {
   /** State */
@@ -13,7 +14,8 @@ function App() {
   const [wipPerConstraint, setWipPerConstraint] = useState(12)
 
   /** Initial config */
-
+  const setup = { numWorkcenters, wipPerWorkcenter, wipPerConstraint }
+  const workcenters = getWorkcenters(setup)
   /** Template */
   return (
     <div className='App'>
@@ -28,15 +30,7 @@ function App() {
           setNumConstraints={setNumConstraints}
           setWipPerConstraint={setWipPerConstraint}
         />
-        <Factory
-          className='Factory'
-          runNumber={runNumber}
-          numWorkdays={numWorkdays}
-          numWorkcenters={numWorkcenters}
-          wipPerWorkcenter={wipPerWorkcenter}
-          numConstraints={numConstraints}
-          wipPerConstraint={wipPerConstraint}
-        />
+        <Factory className='Factory' workcenters={workcenters} />
       </div>
     </div>
   )
