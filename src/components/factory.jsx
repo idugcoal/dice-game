@@ -22,14 +22,10 @@ const Factory = props => {
     return _workcenters
   }
 
-  /**
-    Initial config
-   */
+  /** Initial config */
   const workcenters = buildWorkcenters()
 
-  /**
-    Template
-   */
+  /** Template */
   return (
     <div style={styles.container}>
       <div style={styles.title}>{`I am a factory`}</div>
