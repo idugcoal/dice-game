@@ -1,7 +1,6 @@
 import React from 'react'
 
 const UserInputs = props => {
-  // console.log(props)
   return (
     <div style={styles.container}>
       <div style={styles.title}>I am the user inputs</div>
@@ -39,7 +38,7 @@ const UserInputs = props => {
 }
 
 const Input = props => {
-  const getInput = ({ type, cb }) => {
+  const setInput = ({ type, cb }) => {
     switch (type) {
       case 'runNumber':
         cb(1)
@@ -48,7 +47,7 @@ const Input = props => {
         cb(20)
         return
       case 'numWorkcenters':
-        cb(6)
+        cb(9)
         return
       case 'wipPerWorkcenter':
         cb(4)
@@ -67,8 +66,7 @@ const Input = props => {
   }
 
   const onClick = props => {
-    // console.log(props)
-    getInput(props)
+    setInput(props)
   }
 
   return (
@@ -84,7 +82,7 @@ const styles = {
     flexDirection: 'column',
     textAlign: 'center',
     justifyContent: 'center',
-    border: '1px solid black',
+    border: '1px solid green',
   },
   title: {
     textAlign: 'center',
