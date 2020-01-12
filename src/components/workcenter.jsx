@@ -1,15 +1,17 @@
 import React from 'react'
 
-const Workcenter = props => {
-  const getStatus = ({ isConstraint }) => {
-    return isConstraint ? 'Constraint' : 'Not a constraint'
+const Workcenter = ({ isConstraint, number }) => {
+  /** Helper functions */
+  const getStatus = isConstraint => {
+    return isConstraint ? 'Constraint!' : 'Not a constraint'
   }
+
+  /** Template */
   return (
     <div style={styles.container}>
-      <div style={styles.title}>{`work center #${props.number + 1}`}</div>
-      <div
-        style={props.isConstraint ? styles.constraint : styles.nonConstraint}>
-        {getStatus(props)}
+      <div style={styles.title}>{`work center #${number}`}</div>
+      <div style={isConstraint ? styles.constraint : styles.nonConstraint}>
+        {getStatus(isConstraint)}
       </div>
     </div>
   )

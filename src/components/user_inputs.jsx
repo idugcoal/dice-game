@@ -5,58 +5,73 @@ const UserInputs = props => {
     <div style={styles.container}>
       <div style={styles.title}>I am the user inputs</div>
       <div style={styles.inputsContainer}>
-        <Input cb={props.setRunNumber} type={'runNumber'} label={'run #'} />
+        <Input
+          cb={props.setRunNumber}
+          type={'runNumber'}
+          label={'run #'}
+          defaultValue={4}
+        />
         <Input
           cb={props.setNumWorkdays}
           type={'numWorkdays'}
           label={'# of workdays'}
+          defaultValue={1}
         />
         <Input
           cb={props.setNumWorkcenters}
           type={'numWorkcenters'}
           label={'# of work centers'}
+          defaultValue={6}
         />
         <Input
           cb={props.setWipPerWorkcenter}
           type={'wipPerWorkcenter'}
           label={'WIP per work center'}
+          defaultValue={4}
         />
         <Input
           cb={props.setNumConstraints}
           type={'numConstraints'}
           label={'# of constraints'}
+          defaultValue={1}
         />
         <Input
           cb={props.setWipPerConstraint}
           type={'wipPerConstraint'}
           label={'WIP per constraint'}
+          defaultValue={12}
         />
-        <Input cb={props.setRunNumber} type={'roll'} label={'Roll Dice'} />
+        <Input
+          cb={props.setRunNumber}
+          type={'roll'}
+          label={'Roll Dice'}
+          defaultValue={3}
+        />
       </div>
     </div>
   )
 }
 
 const Input = props => {
-  const setInput = ({ type, cb }) => {
+  const setInput = ({ type, cb, defaultValue }) => {
     switch (type) {
       case 'runNumber':
-        cb(1)
+        cb(defaultValue)
         return
       case 'numWorkdays':
-        cb(20)
+        cb(defaultValue)
         return
       case 'numWorkcenters':
-        cb(9)
+        cb(defaultValue)
         return
       case 'wipPerWorkcenter':
-        cb(4)
+        cb(defaultValue)
         return
       case 'numConstraints':
-        cb(1)
+        cb(defaultValue)
         return
       case 'wipPerConstraint':
-        cb(12)
+        cb(defaultValue)
         return
       case 'roll':
         return 3
@@ -65,12 +80,8 @@ const Input = props => {
     }
   }
 
-  const onClick = props => {
-    setInput(props)
-  }
-
   return (
-    <div style={styles.input} onClick={() => onClick(props)}>
+    <div style={styles.input} onClick={() => setInput(props)}>
       {props.label}
     </div>
   )
