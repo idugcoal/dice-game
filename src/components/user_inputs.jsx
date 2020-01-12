@@ -1,5 +1,6 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import './../App.css'
 export const getSettings = () => {
   return {
     runNumber: 4,
@@ -41,34 +42,50 @@ const UserInputs = props => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.title}>I am the user inputs</div>
+      {/* <div style={styles.title}>I am the user inputs</div> */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div style={styles.inputsContainer}>
-          <div style={styles.input}>
+          {/* <div style={styles.label}>
             {`Run number`}
-            <input name='runNumber' ref={register} />
-          </div>
-          <div style={styles.input}>
+            <input name='runNumber' style={styles.input} ref={register} />
+          </div> */}
+          <div style={styles.label}>
             {`Number of workdays`}
-            <input name='numWorkdays' ref={register({ pattern: /\d+/ })} />
+            <input
+              name='numWorkdays'
+              style={styles.input}
+              ref={register({ pattern: /\d+/ })}
+            />
           </div>
-          <div style={styles.input}>
+          <div style={styles.label}>
             {`Number of workcenters`}
-            <input name='numWorkcenters' ref={register({ pattern: /\d+/ })} />
+            <input
+              name='numWorkcenters'
+              style={styles.input}
+              ref={register({ pattern: /\d+/ })}
+            />
           </div>
-          <div style={styles.input}>
+          <div style={styles.label}>
             {`WIP per workcenter`}
-            <input name='wipPerWorkcenter' ref={register({ pattern: /\d+/ })} />
+            <input
+              name='wipPerWorkcenter'
+              style={styles.input}
+              ref={register({ pattern: /\d+/ })}
+            />
           </div>
-          <div style={styles.input}>
+          {/* <div style={styles.input}>
             {`Number of constraints`}
-            <input name='numConstraints' ref={register({ pattern: /\d+/ })} />
-          </div>
-          <div style={styles.input}>
+            <input name='numConstraints' style={styles.input} ref={register({ pattern: /\d+/ })} />
+          </div> */}
+          <div style={styles.label}>
             {`WIP per constraint`}
-            <input name='wipPerConstraint' ref={register({ pattern: /\d+/ })} />
-            <input type='submit' />
+            <input
+              name='wipPerConstraint'
+              style={styles.input}
+              ref={register({ pattern: /\d+/ })}
+            />
           </div>
+          <input value={'Save settings'} style={styles.button} type='submit' />
         </div>
       </form>
     </div>
@@ -83,20 +100,36 @@ const styles = {
     justifyContent: 'center',
     border: '1px solid green',
   },
-  title: {
-    textAlign: 'center',
-    fontSize: 24,
-  },
   inputsContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  input: {
+  label: {
     color: 'dodgerblue',
-    fontSize: 18,
+    fontSize: '24px',
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  input: {
+    width: '100%',
+    padding: '12px 20px',
+    margin: '8px 0',
+    display: 'inline-block',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    boxSizing: 'border-box',
+    color: 'black',
+    fontSize: '18px',
+    justifyContent: 'center',
+  },
+
+  button: {
+    backgroundColor: '#4caf50',
+    fontSize: '24px',
+    margin: '16px',
   },
 }
 
