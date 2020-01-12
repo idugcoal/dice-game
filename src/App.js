@@ -4,29 +4,17 @@ import UserInputs from './components/user_inputs'
 import Factory from './components/factory'
 
 function App() {
-  /**
-    State
-   */
+  /** State */
   const [runNumber, setRunNumber] = useState()
   const [numWorkdays, setNumWorkdays] = useState()
-  const [numWorkcenters, setNumWorkcenters] = useState()
+  const [numWorkcenters, setNumWorkcenters] = useState(6)
   const [wipPerWorkcenter, setWipPerWorkcenter] = useState()
   const [numConstraints, setNumConstraints] = useState()
   const [wipPerConstraint, setWipPerConstraint] = useState()
 
-  /**
-    Initial config
-   */
-  const _numWorkcenters = 6
-  const _workcenters = []
-  for (let i = 0; i < _numWorkcenters; i++) {
-    _workcenters.push(i)
-  }
-  const [workcenters] = useState(_workcenters)
+  /** Initial config */
 
-  /**
-    Template
-   */
+  /** Template */
   return (
     <div className='App'>
       <div className='App-header'>Dice Game</div>
@@ -42,7 +30,6 @@ function App() {
         />
         <Factory
           className='Factory'
-          workcenters={workcenters}
           runNumber={runNumber}
           numWorkdays={numWorkdays}
           numWorkcenters={numWorkcenters}
