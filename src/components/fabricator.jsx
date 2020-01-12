@@ -22,11 +22,7 @@ export const getWorkcenters = ({
     return _workcenters
   }
 
-  /** Initial config */
   const workcenters = buildWorkcenters()
 
-  /** Template */
   return workcenters
 }
-
-// export default getWorkcenters
