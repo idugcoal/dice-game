@@ -1,88 +1,76 @@
 import React from 'react'
-
-const UserInputs = props => {
-  return (
-    <div style={styles.container}>
-      <div style={styles.title}>I am the user inputs</div>
-      <div style={styles.inputsContainer}>
-        <Input
-          cb={props.setRunNumber}
-          type={'runNumber'}
-          label={'run #'}
-          defaultValue={4}
-        />
-        <Input
-          cb={props.setNumWorkdays}
-          type={'numWorkdays'}
-          label={'# of workdays'}
-          defaultValue={1}
-        />
-        <Input
-          cb={props.setNumWorkcenters}
-          type={'numWorkcenters'}
-          label={'# of work centers'}
-          defaultValue={6}
-        />
-        <Input
-          cb={props.setWipPerWorkcenter}
-          type={'wipPerWorkcenter'}
-          label={'WIP per work center'}
-          defaultValue={4}
-        />
-        <Input
-          cb={props.setNumConstraints}
-          type={'numConstraints'}
-          label={'# of constraints'}
-          defaultValue={1}
-        />
-        <Input
-          cb={props.setWipPerConstraint}
-          type={'wipPerConstraint'}
-          label={'WIP per constraint'}
-          defaultValue={12}
-        />
-        <Input
-          cb={props.setRunNumber}
-          type={'roll'}
-          label={'Roll Dice'}
-          defaultValue={3}
-        />
-      </div>
-    </div>
-  )
+import { useForm } from 'react-hook-form'
+export const getSettings = () => {
+  return {
+    runNumber: 4,
+    numWorkdays: 20,
+    numWorkcenters: 6,
+    wipPerWorkcenter: 4,
+    numConstraints: 1,
+    wipPerConstraint: 12,
+  }
 }
 
-const Input = props => {
-  const setInput = ({ type, cb, defaultValue }) => {
-    switch (type) {
-      case 'runNumber':
-        cb(defaultValue)
-        return
-      case 'numWorkdays':
-        cb(defaultValue)
-        return
-      case 'numWorkcenters':
-        cb(defaultValue)
-        return
-      case 'wipPerWorkcenter':
-        cb(defaultValue)
-        return
-      case 'numConstraints':
-        cb(defaultValue)
-        return
-      case 'wipPerConstraint':
-        cb(defaultValue)
-        return
-      case 'roll':
-        return 3
-      default:
-        return 'error'
+const UserInputs = props => {
+  const getDefaultValues = () => {
+    return {
+      runNumber: 4,
+      numWorkdays: 20,
+      numWorkcenters: 6,
+      wipPerWorkcenter: 4,
+      numConstraints: 1,
+      wipPerConstraint: 12,
     }
+  }
+  const { register, handleSubmit } = useForm({
+    defaultValues: getDefaultValues(),
+  })
+
+  const convertFormDataToIntegers = data => {
+    const dataToIntegers = {}
+    Object.keys(data).forEach(function(key) {
+      dataToIntegers[key] = parseInt(data[key], 10)
+    })
+    return dataToIntegers
+  }
+
+  const onSubmit = data => {
+    const formData = convertFormDataToIntegers(data)
+    props.setSettings(formData)
   }
 
   return (
-    <div style={styles.input} onClick={() => setInput(props)}>
-      {props.label}
+    <div style={styles.container}>
+      <div style={styles.title}>I am the user inputs</div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div style={styles.inputsContainer}>
+          <div style={styles.input}>
+            {`Run number`}
+            <input name='runNumber' ref={register} />
+          </div>
+          <div style={styles.input}>
+            {`Number of workdays`}
+            <input name='numWorkdays' ref={register({ pattern: /\d+/ })} />
+          </div>
+          <div style={styles.input}>
+            {`Number of workcenters`}
+            <input name='numWorkcenters' ref={register({ pattern: /\d+/ })} />
+          </div>
+          <div style={styles.input}>
+            {`WIP per workcenter`}
+            <input name='wipPerWorkcenter' ref={register({ pattern: /\d+/ })} />
+          </div>
+          <div style={styles.input}>
+            {`Number of constraints`}
+            <input name='numConstraints' ref={register({ pattern: /\d+/ })} />
+          </div>
+          <div style={styles.input}>
+            {`WIP per constraint`}
+            <input name='wipPerConstraint' ref={register({ pattern: /\d+/ })} />
+            <input type='submit' />
+          </div>
+        </div>
+      </form>
     </div>
   )
 }
@@ -106,7 +94,9 @@ const styles = {
   },
   input: {
     color: 'dodgerblue',
-    fontSize: 22,
+    fontSize: 18,
+    display: 'flex',
+    flexDirection: 'column',
   },
 }
 
