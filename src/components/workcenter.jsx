@@ -1,11 +1,16 @@
 import React from 'react'
-// import Workcenter from './workcenter'
 
 const Workcenter = props => {
-  const workcenter = `work center #${props.number + 1}`
+  const getStatus = ({ isConstraint }) => {
+    return isConstraint ? 'Constraint' : 'Not a constraint'
+  }
   return (
     <div style={styles.container}>
-      <div style={styles.title}>{workcenter}</div>
+      <div style={styles.title}>{`work center #${props.number + 1}`}</div>
+      <div
+        style={props.isConstraint ? styles.constraint : styles.nonConstraint}>
+        {getStatus(props)}
+      </div>
     </div>
   )
 }
@@ -13,11 +18,18 @@ const Workcenter = props => {
 const styles = {
   container: {
     display: 'flex',
+    flexDirection: 'column',
   },
   title: {
     color: 'purple',
     textAlign: 'center',
     fontSize: 16,
+  },
+  constraint: {
+    color: 'red',
+  },
+  nonConstraint: {
+    color: 'green',
   },
 }
 export default Workcenter
