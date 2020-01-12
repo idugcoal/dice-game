@@ -1,18 +1,14 @@
 import React from 'react'
 import Workcenter from './workcenter'
 
-const Factory = () => {
+const Factory = props => {
   const factory = 'I am a factory'
-  const workcenters = []
-  const numWorkcenters = 6
-  for (let i = 0; i < numWorkcenters; i++) {
-    workcenters.push(i)
-  }
+  console.log(props)
   return (
     <div style={styles.container}>
-      <h1 style={styles.h1}>{factory}</h1>
+      <div style={styles.title}>{factory}</div>
       <div style={styles.workcenters}>
-        {workcenters.map((workcenter, index) => {
+        {props.workcenters.map((workcenter, index) => {
           return <Workcenter number={index} key={index} />
         })}
       </div>
@@ -26,9 +22,9 @@ const styles = {
     border: '1px solid black',
     flexDirection: 'column',
   },
-  h1: {
-    color: 'green',
+  title: {
     textAlign: 'center',
+    fontSize: 24,
   },
   workcenters: {
     display: 'flex',
