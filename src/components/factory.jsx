@@ -6,13 +6,13 @@ const Factory = ({ workcenters }) => {
   return (
     <div style={styles.container}>
       <div style={styles.workcenters}>
-        {workcenters.map((workcenter, index) => {
+        {workcenters.map(({ key, number, isConstraint, wip }: workcenter) => {
           return (
             <Workcenter
-              key={workcenter.key}
-              number={workcenter.number}
-              isConstraint={workcenter.isConstraint}
-              wip={workcenter.wip}
+              key={key}
+              number={number}
+              isConstraint={isConstraint}
+              wip={wip}
             />
           )
         })}
