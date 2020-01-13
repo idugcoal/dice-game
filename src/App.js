@@ -22,6 +22,10 @@ function App() {
   const startGame = () => {
     step === 0 || step === settings.numWorkdays ? setStep(1) : setStep(step + 1)
     // console.log('\nsettings when game starts:', settings)
+    while (step <= settings.numWorkdays) {
+      //const currentRound = calculateCurrentRound()
+      //setStep(step + 1)
+    }
   }
 
   /** Template */

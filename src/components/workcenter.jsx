@@ -3,7 +3,7 @@ import React from 'react'
 const Workcenter = ({ isConstraint, number, wip }) => {
   /** Helper functions */
   const getStatus = isConstraint => {
-    return isConstraint ? 'Constraint!' : 'Not a constraint'
+    return isConstraint ? 'Constraint!' : 'No constraint'
   }
 
   /** Template */

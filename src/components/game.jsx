@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import config from '../config'
 
 const Game = ({ step, setStep }) => {
@@ -12,13 +12,20 @@ const Game = ({ step, setStep }) => {
     return Math.floor(Math.random() * (max - min + 1)) + min
   }
 
+  useEffect(() => {}, [step])
   const onClick = () => {
     setStep(step + 1)
     const diceImages = config.dice
     const roll = rollDie()
     setImage(diceImages[roll - 1])
   }
-
+  /** Game */
+  // 1) roll die
+  // 2) set as inventory intake
+  // 3) add inventory intake and WIP to create stock
+  // 4) roll die
+  //  a) if stock <= die, pass stock to next workcenter and remove from stock
+  //  b) if die < stock, pass die to next workcenter and remove from stock
   /** Template */
   return (
     <div style={styles.container}>
