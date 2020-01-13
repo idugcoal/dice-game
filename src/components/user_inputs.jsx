@@ -1,18 +1,8 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import './../App.css'
-export const getSettings = () => {
-  return {
-    runNumber: 4,
-    numWorkdays: 20,
-    numWorkcenters: 6,
-    wipPerWorkcenter: 4,
-    numConstraints: 1,
-    wipPerConstraint: 12,
-  }
-}
 
 const UserInputs = props => {
+  /** Helper functions */
   const getDefaultValues = () => {
     return {
       runNumber: 4,
@@ -23,9 +13,6 @@ const UserInputs = props => {
       wipPerConstraint: 12,
     }
   }
-  const { register, handleSubmit } = useForm({
-    defaultValues: getDefaultValues(),
-  })
 
   const convertFormDataToIntegers = data => {
     const dataToIntegers = {}
@@ -40,6 +27,12 @@ const UserInputs = props => {
     props.setSettings(formData)
   }
 
+  /** Form  config */
+  const { register, handleSubmit } = useForm({
+    defaultValues: getDefaultValues(),
+  })
+
+  /** Template */
   return (
     <div style={styles.container}>
       {/* <div style={styles.title}>I am the user inputs</div> */}
@@ -128,6 +121,7 @@ const styles = {
     backgroundColor: '#4caf50',
     fontSize: '24px',
     margin: '16px',
+    color: 'white',
   },
 }
 
