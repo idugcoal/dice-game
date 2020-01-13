@@ -5,7 +5,6 @@ const Factory = ({ workcenters }) => {
   /** Template */
   return (
     <div style={styles.container}>
-      <div style={styles.title}>{`I am a factory`}</div>
       <div style={styles.workcenters}>
         {workcenters.map((workcenter, index) => {
           return (
@@ -25,7 +24,6 @@ const Factory = ({ workcenters }) => {
 const styles = {
   container: {
     display: 'flex',
-    border: '1px solid purple',
     flexDirection: 'column',
   },
   title: {

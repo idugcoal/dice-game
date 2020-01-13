@@ -9,11 +9,13 @@ const Workcenter = ({ isConstraint, number, wip }) => {
   /** Template */
   return (
     <div style={styles.container}>
-      <div style={styles.title}>{`work center #${number}`}</div>
-      <div style={isConstraint ? styles.constraint : styles.nonConstraint}>
-        {getStatus(isConstraint)}
+      <div style={styles.workcenter}>
+        <div style={styles.title}>{`work center #${number}`}</div>
+        <div style={isConstraint ? styles.constraint : styles.nonConstraint}>
+          {getStatus(isConstraint)}
+        </div>
+        <div style={styles.wip}>{`WIP: ${wip}`}</div>
       </div>
-      <div style={styles.wip}>{`WIP: ${wip}`}</div>
     </div>
   )
 }
@@ -23,10 +25,14 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
   },
+  workcenter: {
+    border: '1px solid black',
+    margin: '10px',
+  },
   title: {
     color: 'purple',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: '16px',
   },
   constraint: {
     color: 'red',

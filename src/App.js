@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react'
 import './App.css'
 import UserInputs from './components/user_inputs'
 import Factory from './components/factory'
+import Results from './components/results'
+import Game from './components/game'
 import { getWorkcenters } from './components/fabricator'
 
 function App() {
   /** State */
   const [workcenters, setWorkcenters] = useState()
   const [settings, setSettings] = useState()
+  const [step, setStep] = useState(0)
 
   /** Initial config */
   useEffect(() => {
@@ -17,7 +20,8 @@ function App() {
 
   /** Helper functions */
   const startGame = () => {
-    console.log('settings before', settings)
+    step === 0 || step === settings.numWorkdays ? setStep(1) : setStep(step + 1)
+    // console.log('\nsettings when game starts:', settings)
   }
 
   /** Template */
@@ -33,7 +37,11 @@ function App() {
             settings={settings}
           />
         )}
-        {settings && <div onClick={startGame}>Start game</div>}
+        {settings && <div onClick={startGame}>{`Start game`}</div>}
+        {settings && step <= settings.numWorkdays ? (
+          <Game step={step} setStep={setStep} />
+        ) : null}
+        {settings && step === settings.numWorkdays ? <Results /> : null}
       </div>
     </div>
   )
