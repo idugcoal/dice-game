@@ -98,7 +98,6 @@ const styles = {
     flexDirection: 'column',
     textAlign: 'center',
     justifyContent: 'center',
-    border: '1px solid green',
   },
   inputsContainer: {
     display: 'flex',
@@ -125,7 +124,6 @@ const styles = {
     fontSize: '18px',
     justifyContent: 'center',
   },
-
   button: {
     backgroundColor: '#4caf50',
     fontSize: '24px',
