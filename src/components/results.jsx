@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Results = ({ workcenters }) => {
+const Results = ({ results }) => {
   /** Template */
   return (
     <div style={styles.container}>
