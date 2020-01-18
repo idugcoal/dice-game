@@ -11,6 +11,7 @@ function App() {
   const [workcenters, setWorkcenters] = useState()
   const [settings, setSettings] = useState()
   const [step, setStep] = useState(0)
+  const [results, setResults] = useState()
 
   /** Initial config */
   useEffect(() => {
@@ -18,15 +19,12 @@ function App() {
     setWorkcenters(_workcenters)
   }, [settings])
 
+  useEffect(() => {
+    console.log('in [step, results] useEffect', step, results)
+    // setStep(step + 1)
+  }, [step, results])
+
   /** Helper functions */
-  const startGame = () => {
-    step === 0 || step === settings.numWorkdays ? setStep(1) : setStep(step + 1)
-    // console.log('\nsettings when game starts:', settings)
-    while (step <= settings.numWorkdays) {
-      //const currentRound = calculateCurrentRound()
-      //setStep(step + 1)
-    }
-  }
 
   /** Template */
   return (
@@ -41,9 +39,8 @@ function App() {
             settings={settings}
           />
         )}
-        {settings && <div onClick={startGame}>{`Start game`}</div>}
         {settings && step <= settings.numWorkdays ? (
-          <Game step={step} setStep={setStep} />
+          <Game step={step} setStep={setStep} setResults={setResults} />
         ) : null}
         {settings && step === settings.numWorkdays ? <Results /> : null}
       </div>
