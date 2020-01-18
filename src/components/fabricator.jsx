@@ -1,7 +1,9 @@
 export const getWorkcenters = ({
   numWorkcenters,
   wipPerWorkcenter,
+  dicePerWorkcenter,
   wipPerConstraint,
+  dicePerConstraint,
 }) => {
   /** Helper functions */
   const isConstraintIndex = index => {
@@ -17,12 +19,12 @@ export const getWorkcenters = ({
         number: i + 1,
         isConstraint: isConstraint,
         wip: isConstraint ? wipPerConstraint : wipPerWorkcenter,
+        numDice: isConstraint ? dicePerConstraint : dicePerWorkcenter,
       })
     }
     return _workcenters
   }
 
   const workcenters = buildWorkcenters()
-
   return workcenters
 }

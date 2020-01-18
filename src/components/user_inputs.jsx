@@ -27,7 +27,13 @@ const UserInputs = props => {
   const onSubmit = data => {
     setIsGameStarted(true)
     const formData = convertFormDataToIntegers(data)
-    props.setSettings(formData)
+    // TODO: pull this from the form?
+    const addDice = {
+      ...formData,
+      dicePerWorkcenter: 2,
+      dicePerConstraint: 1,
+    }
+    props.setSettings(addDice)
   }
 
   /** Form  config */

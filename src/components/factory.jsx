@@ -6,16 +6,19 @@ const Factory = ({ workcenters }) => {
   return (
     <div style={styles.container}>
       <div style={styles.workcenters}>
-        {workcenters.map(({ key, number, isConstraint, wip }: workcenter) => {
-          return (
-            <Workcenter
-              key={key}
-              number={number}
-              isConstraint={isConstraint}
-              wip={wip}
-            />
-          )
-        })}
+        {workcenters.map(
+          ({ key, number, isConstraint, wip, numDice }: workcenter) => {
+            return (
+              <Workcenter
+                key={key}
+                number={number}
+                isConstraint={isConstraint}
+                wip={wip}
+                numDice={numDice}
+              />
+            )
+          },
+        )}
       </div>
     </div>
   )

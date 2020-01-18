@@ -1,11 +1,10 @@
 import React from 'react'
 
-const Workcenter = ({ isConstraint, number, wip }) => {
+const Workcenter = ({ isConstraint, number, wip, numDice }) => {
   /** Helper functions */
   const getStatus = isConstraint => {
     return isConstraint ? 'Constraint!' : 'No constraint'
   }
-
   /** Template */
   return (
     <div style={styles.container}>
@@ -15,6 +14,7 @@ const Workcenter = ({ isConstraint, number, wip }) => {
           {getStatus(isConstraint)}
         </div>
         <div style={styles.wip}>{`WIP: ${wip}`}</div>
+        <div style={styles.wip}>{`Number of dice: ${numDice}`}</div>
       </div>
     </div>
   )
