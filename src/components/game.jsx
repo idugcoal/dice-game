@@ -4,24 +4,10 @@ import React, {
 } from 'react'
 // import config from '../config'
 
-const Game = ({ step, setStep, results, setResults }) => {
+const Game = ({ workcenters, step, setStep, setResults }) => {
   /** State */
 
-  /** Helper functions */
-  const rollDie = () => {
-    const max = 6
-    const min = 1
-    return Math.floor(Math.random() * (max - min + 1)) + min
-  }
-
-  const rollDice = count => {
-    let result = 0
-    for (let i = 0; i < count; i++) {
-      result += rollDie()
-    }
-    return result
-  }
-
+  /** This effect runs every time the day increments */
   useEffect(() => {
     // when the step changes, that means the day has incremented
     // for every new day:
@@ -33,19 +19,44 @@ const Game = ({ step, setStep, results, setResults }) => {
     //    route each workcenter's completed work
     //      if TOC, constraint's wip also goes to workcenter 1's input
     //  add the day's results object to the results array in state
-  })
+
+    /** Helper functions */
+    const rollDie = () => {
+      const max = 6
+      const min = 1
+      return Math.floor(Math.random() * (max - min + 1)) + min
+    }
+    const rollDice = numDice => {
+      let dice = []
+      for (let i = 0; i < numDice; i++) {
+        dice.push(rollDie())
+      }
+      return dice
+    }
+    const getDailyDiceRolls = numDice => {
+      let diceRolls = []
+      workcenters.forEach(workcenter => {
+        diceRolls.push(rollDice(numDice))
+      })
+      return diceRolls
+    }
+    /** Game steps 
+        1) roll dice
+        2) set as inventory intake
+        3) add inventory intake and WIP to create stock
+        4) roll dice
+         a) if stock <= dice, pass stock to next workcenter and remove from stock
+         b) if dice < stock, pass die to next workcenter and remove from stock
+    */
+    const NUM_DICE = 2
+    const diceRolls = getDailyDiceRolls(NUM_DICE) // holds an array of dice rolls for each workcenter
+
+    console.log('step#', step, 'diceRolls', diceRolls)
+  }, [step, workcenters])
   const startGame = () => {
     setStep(step + 1)
-    const roll = rollDice(2)
-    console.log('roll', roll)
   }
   /** Game */
-  // 1) roll dice
-  // 2) set as inventory intake
-  // 3) add inventory intake and WIP to create stock
-  // 4) roll dice
-  //  a) if stock <= dice, pass stock to next workcenter and remove from stock
-  //  b) if dice < stock, pass die to next workcenter and remove from stock
   /** Template */
   return (
     <div style={styles.container}>
