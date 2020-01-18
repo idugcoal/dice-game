@@ -19,13 +19,6 @@ function App() {
     setWorkcenters(_workcenters)
   }, [settings])
 
-  useEffect(() => {
-    console.log('in [step, results] useEffect', step, results)
-    // setStep(step + 1)
-  }, [step, results])
-
-  /** Helper functions */
-
   /** Template */
   return (
     <div className='App'>
@@ -40,9 +33,16 @@ function App() {
           />
         )}
         {settings && step <= settings.numWorkdays ? (
-          <Game step={step} setStep={setStep} setResults={setResults} />
+          <Game
+            workcenters={workcenters}
+            step={step}
+            setStep={setStep}
+            setResults={setResults}
+          />
         ) : null}
-        {settings && step === settings.numWorkdays ? <Results /> : null}
+        {settings && step === settings.numWorkdays ? (
+          <Results results={results} />
+        ) : null}
       </div>
     </div>
   )
