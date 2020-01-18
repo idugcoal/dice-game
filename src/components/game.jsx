@@ -1,12 +1,9 @@
-import React, {
-  // useState,
-  useEffect,
-} from 'react'
+import React, { useState, useEffect } from 'react'
 // import config from '../config'
 
 const Game = ({ workcenters, step, setStep, setResults }) => {
   /** State */
-
+  const [isGameRunning, setIsGameRunning] = useState(false)
   /** This effect runs every time the day increments */
   useEffect(() => {
     // when the step changes, that means the day has incremented
@@ -22,10 +19,11 @@ const Game = ({ workcenters, step, setStep, setResults }) => {
 
     /** Helper functions */
     const rollDie = () => {
-      const max = 6
-      const min = 1
-      return Math.floor(Math.random() * (max - min + 1)) + min
+      const MIN = 1
+      const MAX = 6
+      return Math.floor(Math.random() * (MAX - MIN + 1)) + MIN
     }
+
     const rollDice = numDice => {
       let dice = []
       for (let i = 0; i < numDice; i++) {
@@ -33,37 +31,75 @@ const Game = ({ workcenters, step, setStep, setResults }) => {
       }
       return dice
     }
-    const getDailyDiceRolls = numDice => {
-      let diceRolls = []
-      workcenters.forEach(workcenter => {
-        diceRolls.push(rollDice(numDice))
+
+    const getDiceTotal = dice => {
+      return dice.reduce((current, total) => {
+        return total + current
       })
-      return diceRolls
     }
+
+    /** Game functions */
+    // const getWorkProcessed = (inventory, wip) => {
+    //   return Math.min(inventory, wip)
+    // }
+
     /** Game steps 
         1) roll dice
         2) set as inventory intake
         3) add inventory intake and WIP to create stock
         4) roll dice
          a) if stock <= dice, pass stock to next workcenter and remove from stock
-         b) if dice < stock, pass die to next workcenter and remove from stock
+         b) if dice < stock, pass dice to next workcenter and remove from stock
     */
-    const NUM_DICE = 2
-    const diceRolls = getDailyDiceRolls(NUM_DICE) // holds an array of dice rolls for each workcenter
+    /**
+        Results:
+          Day 1:
+            Workcenter 1:
+              inventory from feeding process:
+                if workcenter 1, then this is a dice roll
+                if not workcenter 1, this is the workcenter's wip
+              dice roll:
+                set of returned dice
+                calculated total of returned dice
+              amount of work processed this day:
+                return the minimum of inventory and dice total
+            Workcenter 2:
+              ...
+          Day 2:
+          ...
+     */
+    /** Game starts here */
+    if (isGameRunning) {
+      const dice = rollDice(2)
+      const diceTotal = getDiceTotal(dice)
+      console.log('step#', step, 'dice', dice, 'total', diceTotal)
+    }
+  }, [step, workcenters, isGameRunning, setResults])
 
-    console.log('step#', step, 'diceRolls', diceRolls)
-  }, [step, workcenters])
-  const startGame = () => {
+  /** Handlers */
+  const onStartGame = () => {
+    if (workcenters && !isGameRunning) {
+      setIsGameRunning(true)
+      setStep(1)
+    }
+  }
+  const onNextStep = () => {
     setStep(step + 1)
   }
-  /** Game */
+
   /** Template */
   return (
     <div style={styles.container}>
-      {/* <div style={styles.title}>{`Game`}</div> */}
-      <div style={styles.startButton} onClick={startGame}>
-        {`Start`}
-      </div>
+      {!isGameRunning && (
+        <div style={styles.startButton} onClick={onStartGame}>
+          {`Start`}
+        </div>
+      )}
+      {isGameRunning && (
+        <div style={styles.nextStepButton} onClick={onNextStep}>
+          {`Next step`}
+        </div>
+      )}
     </div>
   )
 }
@@ -71,22 +107,28 @@ const Game = ({ workcenters, step, setStep, setResults }) => {
 const styles = {
   container: {
     display: 'flex',
-    flexDirection: 'column',
-  },
-  // title: {
-  //   textAlign: 'center',
-  //   fontSize: 24,
-  // },
-  diceContainer: {
-    width: 200,
-    height: 200,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   startButton: {
     backgroundColor: '#4caf50',
     fontSize: '24px',
-    margin: '16px',
     color: 'white',
-    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    width: '25%',
+    height: 50,
+  },
+  nextStepButton: {
+    backgroundColor: 'dodgerblue',
+    fontSize: '24px',
+    color: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    width: '25%',
+    height: 50,
   },
 }
 export default Game
