@@ -2,17 +2,12 @@ import React from 'react'
 
 const Workcenter = ({ isConstraint, number, wip, numDice }) => {
   /** Helper functions */
-  const getStatus = isConstraint => {
-    return isConstraint ? 'Constraint!' : 'No constraint'
-  }
+
   /** Template */
   return (
     <div style={styles.container}>
-      <div style={styles.workcenter}>
+      <div style={isConstraint ? styles.constraint : styles.workcenter}>
         <div style={styles.title}>{`work center #${number}`}</div>
-        <div style={isConstraint ? styles.constraint : styles.nonConstraint}>
-          {getStatus(isConstraint)}
-        </div>
         <div style={styles.wip}>{`WIP: ${wip}`}</div>
         <div style={styles.wip}>{`Number of dice: ${numDice}`}</div>
       </div>
@@ -26,19 +21,19 @@ const styles = {
     flexDirection: 'column',
   },
   workcenter: {
-    border: '1px solid black',
-    margin: '10px',
+    border: '1px solid green',
+    textAlign: 'center',
+    margin: 10,
+  },
+  constraint: {
+    border: '1px solid red',
+    textAlign: 'center',
+    margin: 10,
   },
   title: {
     color: 'purple',
-    textAlign: 'center',
     fontSize: '16px',
-  },
-  constraint: {
-    color: 'red',
-  },
-  nonConstraint: {
-    color: 'green',
+    textAlign: 'center',
   },
 }
 export default Workcenter
