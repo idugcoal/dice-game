@@ -2,56 +2,13 @@ import React, { useState, useEffect } from 'react'
 // import config from '../config'
 
 const Game = ({ workcenters, step, setStep, setResults }) => {
-  /** State */
-  const [isGameRunning, setIsGameRunning] = useState(false)
-  /** This effect runs every time the day increments */
-  useEffect(() => {
-    // when the step changes, that means the day has incremented
-    // for every new day:
-    //  for every workcenter:
-    //    roll dice
-    //      workcenter 1's dice roll determines the amount it completes (unless TOC)
-    //      every other workcenter completes the smaller of dice roll and wip
-    //    calculate each workcenter's output
-    //    route each workcenter's completed work
-    //      if TOC, constraint's wip also goes to workcenter 1's input
-    //  add the day's results object to the results array in state
+  // if workcenter 1, get input from dice roll (non-TOC) or from constraint (TOC)
+  //    if workcenter 1 day 1, get input from dice roll no matter what
+  // if workcenter n + 1, get input from the previous workcenter's output
+  // all workcenters calculate capacity with a dice roll
+  // output is calculated as the minimum of capacity and dice roll
 
-    /** Helper functions */
-    const rollDie = () => {
-      const MIN = 1
-      const MAX = 6
-      return Math.floor(Math.random() * (MAX - MIN + 1)) + MIN
-    }
-
-    const rollDice = numDice => {
-      let dice = []
-      for (let i = 0; i < numDice; i++) {
-        dice.push(rollDie())
-      }
-      return dice
-    }
-
-    const getDiceTotal = dice => {
-      return dice.reduce((current, total) => {
-        return total + current
-      })
-    }
-
-    /** Game functions */
-    // const getWorkProcessed = (inventory, wip) => {
-    //   return Math.min(inventory, wip)
-    // }
-
-    /** Game steps 
-        1) roll dice
-        2) set as inventory intake
-        3) add inventory intake and WIP to create stock
-        4) roll dice
-         a) if stock <= dice, pass stock to next workcenter and remove from stock
-         b) if dice < stock, pass dice to next workcenter and remove from stock
-    */
-    /**
+  /** Shape of the results object
         Results:
           Day 1:
             Workcenter 1:
@@ -68,11 +25,75 @@ const Game = ({ workcenters, step, setStep, setResults }) => {
           Day 2:
           ...
      */
+  /** State */
+  const [isGameRunning, setIsGameRunning] = useState(false)
+  /** This effect runs every time the day increments */
+  useEffect(() => {
+    /** Helper functions */
+    const rollDie = () => {
+      const MIN = 1
+      const MAX = 6
+      return Math.floor(Math.random() * (MAX - MIN + 1)) + MIN
+    }
+    const rollDice = numDice => {
+      let dice = []
+      for (let i = 0; i < numDice; i++) {
+        dice.push(rollDie())
+      }
+      return dice
+    }
+    const getDiceTotal = dice => {
+      return dice.reduce((current, total) => {
+        return total + current
+      })
+    }
+    const getDice = workcenter => {
+      // get dice
+      const rolls = rollDice(workcenter.numDice)
+      const total = getDiceTotal(rolls)
+      return {
+        rolls,
+        total,
+      }
+    }
+    const getWorkProcessed = (inventory, wip) => {
+      return Math.min(inventory, wip)
+    }
+
+    /** Game functions */
+    const calculateDayForWorkcenter = workcenter => {
+      // calculate inventory:
+      //   if workcenter 1, this is a dice roll (non-TOC) or from constraint's output
+      //   if workcenter 1 AND day 1, this is a dice roll
+      const dice = getDice(workcenter)
+      const inventory =
+        workcenter.number === 1 && step === 1
+          ? dice.total // workcenter 1, day 1
+          : workcenter.number === 1
+          ? workcenter.wip // workcenter 1, day n + 1
+          : 7 // workcenter n + 1
+
+      const output = getWorkProcessed(inventory, dice.total)
+
+      return {
+        inventory,
+        dice,
+        output,
+      }
+    }
+
+    const getResults = () => {
+      return workcenters.reduce((all, workcenter) => {
+        const workcenterDay = calculateDayForWorkcenter(workcenter)
+        all.push(workcenterDay)
+        return all
+      }, [])
+    }
+
     /** Game starts here */
     if (isGameRunning) {
-      const dice = rollDice(2)
-      const diceTotal = getDiceTotal(dice)
-      console.log('step#', step, 'dice', dice, 'total', diceTotal)
+      const dailyResultsForAllWorkcenters = getResults()
+      console.log('step#', step, dailyResultsForAllWorkcenters)
     }
   }, [step, workcenters, isGameRunning, setResults])
 
@@ -111,24 +132,24 @@ const styles = {
     justifyContent: 'center',
   },
   startButton: {
-    backgroundColor: '#4caf50',
-    fontSize: '24px',
-    color: 'white',
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    display: 'flex',
-    width: '25%',
+    backgroundColor: '#4caf50',
+    color: 'white',
+    fontSize: '24px',
     height: 50,
+    width: '25%',
   },
   nextStepButton: {
-    backgroundColor: 'dodgerblue',
-    fontSize: '24px',
-    color: 'white',
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    display: 'flex',
-    width: '25%',
+    backgroundColor: 'dodgerblue',
+    color: 'white',
+    fontSize: '24px',
     height: 50,
+    width: '25%',
   },
 }
 export default Game
