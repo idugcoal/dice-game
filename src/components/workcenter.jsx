@@ -9,7 +9,7 @@ const Workcenter = ({ isConstraint, number, wip, numDice }) => {
       <div style={isConstraint ? styles.constraint : styles.workcenter}>
         <div style={styles.title}>{`work center #${number}`}</div>
         <div style={styles.wip}>{`WIP: ${wip}`}</div>
-        <div style={styles.wip}>{`Number of dice: ${numDice}`}</div>
+        <div style={styles.wip}>{`Dice: ${numDice}`}</div>
       </div>
     </div>
   )
