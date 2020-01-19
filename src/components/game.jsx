@@ -1,58 +1,126 @@
-import React, {
-  // useState,
-  useEffect,
-} from 'react'
+import React, { useState, useEffect } from 'react'
 // import config from '../config'
 
-const Game = ({ step, setStep, results, setResults }) => {
+const Game = ({ workcenters, step, setStep, setResults }) => {
+  // if workcenter 1, get input from dice roll (non-TOC) or from constraint (TOC)
+  //    if workcenter 1 day 1, get input from dice roll no matter what
+  // if workcenter n + 1, get input from the previous workcenter's output
+  // all workcenters calculate capacity with a dice roll
+  // output is calculated as the minimum of capacity and dice roll
+
+  /** Shape of the results object
+        Results:
+          Day 1:
+            Workcenter 1:
+              inventory from feeding process:
+                if workcenter 1, then this is a dice roll
+                if not workcenter 1, this is the workcenter's wip
+              dice roll:
+                set of returned dice
+                calculated total of returned dice
+              amount of work processed this day:
+                return the minimum of inventory and dice total
+            Workcenter 2:
+              ...
+          Day 2:
+          ...
+     */
   /** State */
-
-  /** Helper functions */
-  const rollDie = () => {
-    const max = 6
-    const min = 1
-    return Math.floor(Math.random() * (max - min + 1)) + min
-  }
-
-  const rollDice = count => {
-    let result = 0
-    for (let i = 0; i < count; i++) {
-      result += rollDie()
-    }
-    return result
-  }
-
+  const [isGameRunning, setIsGameRunning] = useState(false)
+  /** This effect runs every time the day increments */
   useEffect(() => {
-    // when the step changes, that means the day has incremented
-    // for every new day:
-    //  for every workcenter:
-    //    roll dice
-    //      workcenter 1's dice roll determines the amount it completes (unless TOC)
-    //      every other workcenter completes the smaller of dice roll and wip
-    //    calculate each workcenter's output
-    //    route each workcenter's completed work
-    //      if TOC, constraint's wip also goes to workcenter 1's input
-    //  add the day's results object to the results array in state
-  })
-  const startGame = () => {
-    setStep(step + 1)
-    const roll = rollDice(2)
-    console.log('roll', roll)
+    /** Helper functions */
+    const rollDie = () => {
+      const MIN = 1
+      const MAX = 6
+      return Math.floor(Math.random() * (MAX - MIN + 1)) + MIN
+    }
+    const rollDice = numDice => {
+      let dice = []
+      for (let i = 0; i < numDice; i++) {
+        dice.push(rollDie())
+      }
+      return dice
+    }
+    const getDiceTotal = dice => {
+      return dice.reduce((current, total) => {
+        return total + current
+      })
+    }
+    const getDice = workcenter => {
+      // get dice
+      const rolls = rollDice(workcenter.numDice)
+      const total = getDiceTotal(rolls)
+      return {
+        rolls,
+        total,
+      }
+    }
+    const getWorkProcessed = (inventory, wip) => {
+      return Math.min(inventory, wip)
+    }
+
+    /** Game functions */
+    const calculateDayForWorkcenter = workcenter => {
+      // calculate inventory:
+      //   if workcenter 1, this is a dice roll (non-TOC) or from constraint's output
+      //   if workcenter 1 AND day 1, this is a dice roll
+      const dice = getDice(workcenter)
+      const inventory =
+        workcenter.number === 1 && step === 1
+          ? dice.total // workcenter 1, day 1
+          : workcenter.number === 1
+          ? workcenter.wip // workcenter 1, day n + 1
+          : 7 // workcenter n + 1
+
+      const output = getWorkProcessed(inventory, dice.total)
+
+      return {
+        inventory,
+        dice,
+        output,
+      }
+    }
+
+    const getResults = () => {
+      return workcenters.reduce((all, workcenter) => {
+        const workcenterDay = calculateDayForWorkcenter(workcenter)
+        all.push(workcenterDay)
+        return all
+      }, [])
+    }
+
+    /** Game starts here */
+    if (isGameRunning) {
+      const dailyResultsForAllWorkcenters = getResults()
+      console.log('step#', step, dailyResultsForAllWorkcenters)
+    }
+  }, [step, workcenters, isGameRunning, setResults])
+
+  /** Handlers */
+  const onStartGame = () => {
+    if (workcenters && !isGameRunning) {
+      setIsGameRunning(true)
+      setStep(1)
+    }
   }
-  /** Game */
-  // 1) roll dice
-  // 2) set as inventory intake
-  // 3) add inventory intake and WIP to create stock
-  // 4) roll dice
-  //  a) if stock <= dice, pass stock to next workcenter and remove from stock
-  //  b) if dice < stock, pass die to next workcenter and remove from stock
+  const onNextStep = () => {
+    setStep(step + 1)
+  }
+
   /** Template */
   return (
     <div style={styles.container}>
-      {/* <div style={styles.title}>{`Game`}</div> */}
-      <div style={styles.startButton} onClick={startGame}>
-        {`Start`}
-      </div>
+      {!isGameRunning && (
+        <div style={styles.startButton} onClick={onStartGame}>
+          {`Start`}
+        </div>
+      )}
+      {isGameRunning && (
+        <div style={styles.nextStepButton} onClick={onNextStep}>
+          {`Next step`}
+        </div>
+      )}
     </div>
   )
 }
@@ -60,22 +128,28 @@ const Game = ({ step, setStep, results, setResults }) => {
 const styles = {
   container: {
     display: 'flex',
-    flexDirection: 'column',
-  },
-  // title: {
-  //   textAlign: 'center',
-  //   fontSize: 24,
-  // },
-  diceContainer: {
-    width: 200,
-    height: 200,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   startButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#4caf50',
-    fontSize: '24px',
-    margin: '16px',
     color: 'white',
-    textAlign: 'center',
+    fontSize: '24px',
+    height: 50,
+    width: '25%',
+  },
+  nextStepButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'dodgerblue',
+    color: 'white',
+    fontSize: '24px',
+    height: 50,
+    width: '25%',
   },
 }
 export default Game
