@@ -37,6 +37,7 @@ function App() {
             workcenters={workcenters}
             step={step}
             setStep={setStep}
+            results={results}
             setResults={setResults}
           />
         ) : null}
