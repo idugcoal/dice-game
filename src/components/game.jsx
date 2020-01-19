@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 // import config from '../config'
 
-const Game = ({ workcenters, step, setStep, setResults }) => {
+const Game = ({ workcenters, step, setStep, results, setResults }) => {
   // if workcenter 1, get input from dice roll (non-TOC) or from constraint (TOC)
   //    if workcenter 1 day 1, get input from dice roll no matter what
   // if workcenter n + 1, get input from the previous workcenter's output
@@ -45,7 +45,7 @@ const Game = ({ workcenters, step, setStep, setResults }) => {
     const getDiceTotal = dice => {
       return dice.reduce((current, total) => {
         return total + current
-      })
+      }, 0)
     }
     const getDice = workcenter => {
       // get dice
@@ -61,28 +61,38 @@ const Game = ({ workcenters, step, setStep, setResults }) => {
     }
 
     /** Game functions */
-    const calculateDayForWorkcenter = workcenter => {
-      // calculate inventory:
-      //   if workcenter 1, this is a dice roll (non-TOC) or from constraint's output
-      //   if workcenter 1 AND day 1, this is a dice roll
-      const dice = getDice(workcenter)
-      const inventory =
-        workcenter.number === 1 && step === 1
-          ? dice.total // workcenter 1, day 1
-          : workcenter.number === 1
-          ? workcenter.wip // workcenter 1, day n + 1
-          : 7 // workcenter n + 1
-
-      const output = getWorkProcessed(inventory, dice.total)
-
-      return {
-        inventory,
-        dice,
-        output,
+    const getOneDayOfResults = () => {
+      const getPreviousConstraintOutput = () => {
+        const prevWorkcenter = workcenters.filter(workcenter => {
+          return workcenter.isConstraint
+        })
+        console.log('prevWorkcenter', prevWorkcenter)
+        return prevWorkcenter.output
       }
-    }
+      const calculateDayForWorkcenter = workcenter => {
+        const IS_TOC = true
+        const isConstraint = true
+        // calculate inventory:
+        //   if workcenter 1, this is a dice roll (non-TOC) or from constraint's output
+        //   if workcenter 1 AND day 1, this is a dice roll
+        const dice = getDice(workcenter)
+        const inventory =
+          workcenter.number === 1 && step === 1
+            ? dice.total // workcenter 1, day 1 - dice roll
+            : workcenter.number === 1
+            ? IS_TOC // TODO: GOTTA HAVE SOME `isConstraint` LOGIC ON THE LINE ABOVE HERE
+              ? getPreviousConstraintOutput() // workcenter 1, day n + 1  - from constraint's output (TOC)
+              : dice.total // workcenter 1, day n + 1  - dice roll (non-TOC)
+            : dice.total // every other workcenter - dice roll
 
-    const getResults = () => {
+        const output = getWorkProcessed(inventory, dice.total)
+
+        return {
+          inventory,
+          dice,
+          output,
+        }
+      }
       return workcenters.reduce((all, workcenter) => {
         const workcenterDay = calculateDayForWorkcenter(workcenter)
         all.push(workcenterDay)
@@ -92,10 +102,17 @@ const Game = ({ workcenters, step, setStep, setResults }) => {
 
     /** Game starts here */
     if (isGameRunning) {
-      const dailyResultsForAllWorkcenters = getResults()
-      console.log('step#', step, dailyResultsForAllWorkcenters)
+      let allDaysOfResults = []
+      let testing = 1
+      while (testing <= 20) {
+        let oneDayOfResults = getOneDayOfResults()
+        allDaysOfResults.push(oneDayOfResults)
+        console.log('step#', step, oneDayOfResults)
+        console.log('allDaysOfResults', allDaysOfResults)
+        testing++
+      }
     }
-  }, [step, workcenters, isGameRunning, setResults])
+  }, [step, setStep, workcenters, isGameRunning, results, setResults])
 
   /** Handlers */
   const onStartGame = () => {

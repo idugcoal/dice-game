@@ -21,17 +21,17 @@ const styles = {
     flexDirection: 'column',
   },
   workcenter: {
-    border: '1px solid green',
+    border: '3px solid green',
     textAlign: 'center',
     margin: 10,
   },
   constraint: {
-    border: '1px solid red',
+    border: '3px solid red',
     textAlign: 'center',
     margin: 10,
   },
   title: {
-    color: 'purple',
+    color: 'black',
     fontSize: '16px',
     textAlign: 'center',
   },
